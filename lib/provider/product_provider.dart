@@ -91,6 +91,7 @@ class ProductProvider with ChangeNotifier {
           'price': productModel.price,
           'imageUrl': productModel.imageUrl,
           'isFavorite': productModel.isFavorite,
+          'creatorId': _userId,
         }),
       );
 
@@ -121,15 +122,30 @@ class ProductProvider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchAndSetProducts() async {
-    final url = Uri.https('flutter-course-2a591-default-rtdb.firebaseio.com',
-        '/products.json', {'auth': '$_authToken'});
+  Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
+    final url = Uri.https(
+      'flutter-course-2a591-default-rtdb.firebaseio.com',
+      '/products.json',
+      filterByUser
+          ? {
+              'auth': '$_authToken',
+              'orderBy':
+                  json.encode("creatorId"), //json.encode to avoid errors.
+              'equalTo': json.encode(_userId),
+            }
+          : {
+              'auth': '$_authToken',
+            },
+    );
+
+    /// Alternative way of Uri.https - Uri.parse
+    // final url = Uri.parse(
+    //     'https://flutter-course-2a591-default-rtdb.firebaseio.com/products.json?auth=$_authToken&orderBy="creatorId"&equalTo="$_userId"');
+
     final favoritesUrl = Uri.https(
         'flutter-course-2a591-default-rtdb.firebaseio.com',
         '/user-favorites/$_userId.json',
         {'auth': '$_authToken'});
-    // final url = Uri.parse(
-    //     'https://flutter-course-2a591-default-rtdb.firebaseio.com');
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>?;
@@ -156,7 +172,7 @@ class ProductProvider with ChangeNotifier {
             imageUrl: prodData['imageUrl'],
             isFavorite:
                 // if no favoritesData found, set to false. Else get the bool value
-                // if no prodId found, set to false by default.
+                // if no prodId found, set to false
                 favoritesData == null ? false : favoritesData[prodId] ?? false,
           ),
         );

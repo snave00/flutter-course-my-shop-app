@@ -13,7 +13,7 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  // Obtaining Future earky would help to prevent to call
+  // Obtaining Future early would help to prevent to call
   // -the Provider every time the widget rebuilts.
   // This would save api calls and will help in Firebase Optimization
   // -avoiding expensive api calls.

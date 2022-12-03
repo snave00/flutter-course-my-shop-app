@@ -23,16 +23,20 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   void initState() {
     // Will not work inside the initState() if listen was not set to false.
     // See 249 fetching data lesson for alternative ways.
-    setState(() {
-      _isLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
 
     Provider.of<ProductProvider>(context, listen: false)
         .fetchAndSetProducts()
         .then((value) {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     });
     super.initState();
   }
