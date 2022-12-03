@@ -24,6 +24,11 @@ class AuthProvider with ChangeNotifier {
     return null;
   }
 
+  String? get userId {
+    // add null checks like get Token if necessary.
+    return _userId;
+  }
+
   Future<void> _authenticate(
     String email,
     String password,

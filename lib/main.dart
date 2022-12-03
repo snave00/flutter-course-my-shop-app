@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
                 var previousProducts = previous;
                 previousProducts?.authToken = auth.token ?? '';
                 previousProducts == null ? [] : previousProducts.getItems;
+                previousProducts?.userId = auth.userId ?? '';
                 return previousProducts!;
                 // Alternative short way
                 // return previous!..authToken = auth.token!;

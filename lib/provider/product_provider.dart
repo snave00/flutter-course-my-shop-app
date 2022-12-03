@@ -7,9 +7,14 @@ import '../utils/http_exception.dart';
 
 class ProductProvider with ChangeNotifier {
   late String? _authToken;
+  late String? _userId;
 
   set authToken(String value) {
     _authToken = value;
+  }
+
+  set userId(String value) {
+    _userId = value;
   }
 
   // List<ProductModel> _items = loadedProducts;
@@ -38,7 +43,7 @@ class ProductProvider with ChangeNotifier {
         'description': productModel.description,
         'price': productModel.price,
         'imageUrl': productModel.imageUrl,
-        'isFavorite': productModel.isFavorite,
+        // 'isFavorite': productModel.isFavorite, // not included anymore since it was handled on seperate endpoint.
       }),
     )
         .then((response) {
@@ -119,6 +124,10 @@ class ProductProvider with ChangeNotifier {
   Future<void> fetchAndSetProducts() async {
     final url = Uri.https('flutter-course-2a591-default-rtdb.firebaseio.com',
         '/products.json', {'auth': '$_authToken'});
+    final favoritesUrl = Uri.https(
+        'flutter-course-2a591-default-rtdb.firebaseio.com',
+        '/user-favorites/$_userId.json',
+        {'auth': '$_authToken'});
     // final url = Uri.parse(
     //     'https://flutter-course-2a591-default-rtdb.firebaseio.com');
     try {
@@ -131,6 +140,10 @@ class ProductProvider with ChangeNotifier {
         return;
       }
 
+      // Get Favorites
+      final favoritesResponse = await http.get(favoritesUrl);
+      final favoritesData = json.decode(favoritesResponse.body);
+
       final List<ProductModel> loadedProducts = [];
 
       extractedData.forEach((prodId, prodData) {
@@ -141,7 +154,10 @@ class ProductProvider with ChangeNotifier {
             description: prodData['description'],
             price: prodData['price'],
             imageUrl: prodData['imageUrl'],
-            isFavorite: prodData['isFavorite'],
+            isFavorite:
+                // if no favoritesData found, set to false. Else get the bool value
+                // if no prodId found, set to false by default.
+                favoritesData == null ? false : favoritesData[prodId] ?? false,
           ),
         );
       });

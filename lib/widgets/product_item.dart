@@ -41,7 +41,8 @@ class ProductItem extends StatelessWidget {
                   ? const Icon(Icons.favorite)
                   : const Icon(Icons.favorite_border),
               onPressed: () {
-                product.toggleFavorites(authData.token ?? '');
+                product.toggleFavorites(
+                    authData.token ?? '', authData.userId ?? '');
               },
               // Take note of referring the correct 'context'.
               // If we used the 'builderContext' then the color would not reflect correctly
