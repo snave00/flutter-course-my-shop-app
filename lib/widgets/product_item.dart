@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../provider/auth_provider.dart';
 import 'package:provider/provider.dart';
 import '../provider/cart_provider.dart';
 
@@ -24,6 +25,7 @@ class ProductItem extends StatelessWidget {
     // So, we will set the listen to false and only listens to Consumer when there's an update.
     final product = Provider.of<ProductModel>(context, listen: false);
     final cart = Provider.of<CartProvider>(context, listen: false);
+    final authData = Provider.of<AuthProvider>(context, listen: false);
     print('isRebuilt');
 
     return ClipRRect(
@@ -39,7 +41,7 @@ class ProductItem extends StatelessWidget {
                   ? const Icon(Icons.favorite)
                   : const Icon(Icons.favorite_border),
               onPressed: () {
-                product.toggleFavorites();
+                product.toggleFavorites(authData.token ?? '');
               },
               // Take note of referring the correct 'context'.
               // If we used the 'builderContext' then the color would not reflect correctly

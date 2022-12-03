@@ -8,13 +8,19 @@ import 'dart:convert';
 class OrderProvider with ChangeNotifier {
   List<OrderItemModel> _orders = [];
 
+  late String? _authToken;
+
+  set authToken(String value) {
+    _authToken = value;
+  }
+
   List<OrderItemModel> get getOrders {
     return [..._orders];
   }
 
   Future<void> addOrder(List<CartItemModel> cartProducts, double total) async {
-    final url = Uri.https(
-        'flutter-course-2a591-default-rtdb.firebaseio.com', '/orders.json');
+    final url = Uri.https('flutter-course-2a591-default-rtdb.firebaseio.com',
+        '/orders.json', {'auth': '$_authToken'});
     final timeStamp = DateTime.now();
     final response = await http.post(url,
         body: json.encode({
@@ -45,8 +51,8 @@ class OrderProvider with ChangeNotifier {
   }
 
   Future<void> fetchAndSetOrders() async {
-    final url = Uri.https(
-        'flutter-course-2a591-default-rtdb.firebaseio.com', '/orders.json');
+    final url = Uri.https('flutter-course-2a591-default-rtdb.firebaseio.com',
+        '/orders.json', {'auth': '$_authToken'});
     final response = await http.get(url);
     final List<OrderItemModel> loadedOrders = [];
     final extractedData = json.decode(response.body) as Map<String, dynamic>?;

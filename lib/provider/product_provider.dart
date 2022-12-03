@@ -156,7 +156,7 @@ class ProductProvider with ChangeNotifier {
     final prodIndex = _items.indexWhere((element) => element.id == productId);
     if (prodIndex >= 0) {
       final url = Uri.https('flutter-course-2a591-default-rtdb.firebaseio.com',
-          '/products/$productId.json');
+          '/products/$productId.json', {'auth': '$_authToken'});
       try {
         await http.patch(
           url,
@@ -178,7 +178,7 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> deleteProduct(String productId) async {
     final url = Uri.https('flutter-course-2a591-default-rtdb.firebaseio.com',
-        '/products/$productId.json');
+        '/products/$productId.json', {'auth': '$_authToken'});
     final existingProductIndex =
         _items.indexWhere((element) => element.id == productId);
     ProductModel? existingProduct = _items[existingProductIndex]; // backup

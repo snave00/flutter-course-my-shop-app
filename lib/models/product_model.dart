@@ -25,9 +25,9 @@ class ProductModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleFavorites() async {
+  Future<void> toggleFavorites(String token) async {
     final url = Uri.https('flutter-course-2a591-default-rtdb.firebaseio.com',
-        '/products/$id.json');
+        '/products/$id.json', {'auth': token});
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
