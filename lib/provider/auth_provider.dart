@@ -11,6 +11,8 @@ class AuthProvider with ChangeNotifier {
 
   bool get isAuth {
     // return true if token is not null
+    print('AUTH BA: $token');
+    print('AUTH BA2: ${token != null}');
     return token != null;
   }
 
@@ -77,5 +79,12 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> login(String email, String password) async {
     return _authenticate(email, password, 'signInWithPassword');
+  }
+
+  void logout() {
+    _token = null;
+    _userId = null;
+    _expiryDate = null;
+    notifyListeners();
   }
 }

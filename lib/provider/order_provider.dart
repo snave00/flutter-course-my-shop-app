@@ -12,6 +12,7 @@ class OrderProvider with ChangeNotifier {
   late String? _userId;
 
   set authToken(String value) {
+    print('AUTH BA ORDER: $value');
     _authToken = value;
   }
 

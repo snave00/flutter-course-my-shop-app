@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('AUTH BA rebuilding Main.');
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(

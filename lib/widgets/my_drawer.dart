@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_shop/utils/app_routes.dart';
+import '../provider/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -64,6 +66,17 @@ class MyDrawer extends StatelessWidget {
             },
             Icons.edit,
             'Manage Products',
+          ),
+          const Divider(),
+          _buildListTile(
+            context,
+            () {
+              // Close drawer
+              Navigator.of(context).pop();
+              Provider.of<AuthProvider>(context, listen: false).logout();
+            },
+            Icons.logout,
+            'Logout',
           ),
         ],
       ),

@@ -10,6 +10,7 @@ class ProductProvider with ChangeNotifier {
   late String? _userId;
 
   set authToken(String value) {
+    print('AUTH BA PRODUCT: $value');
     _authToken = value;
   }
 

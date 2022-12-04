@@ -149,7 +149,7 @@ class _AuthCardState extends State<AuthCard> {
       }
       // Navigate
       if (!mounted) return;
-      AppRoutes.goToProductOverviewScreen(context);
+      // AppRoutes.goToProductOverviewScreen(context);
     } on HttpException catch (error) {
       print('HAHAHAHA $error');
       var errorMessage = 'Auth failed';
