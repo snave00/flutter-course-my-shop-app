@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async';
 
 import 'package:my_shop/utils/http_exception.dart';
 
@@ -8,6 +9,7 @@ class AuthProvider with ChangeNotifier {
   String? _token;
   DateTime? _expiryDate;
   String? _userId;
+  Timer? _authTimer;
 
   bool get isAuth {
     // return true if token is not null
@@ -65,8 +67,9 @@ class AuthProvider with ChangeNotifier {
       // DateTime.now + expiresIn (seconds) = expiry date.
       _expiryDate = DateTime.now()
           .add(Duration(seconds: int.parse(responseData['expiresIn'])));
-      notifyListeners();
+      _autoLogout();
       print('Expiry Date $_expiryDate');
+      notifyListeners();
     } catch (error) {
       print('signup5 $error');
       rethrow;
@@ -85,6 +88,20 @@ class AuthProvider with ChangeNotifier {
     _token = null;
     _userId = null;
     _expiryDate = null;
+    if (_authTimer != null) {
+      _authTimer?.cancel();
+      _authTimer = null;
+    }
     notifyListeners();
+  }
+
+  void _autoLogout() {
+    if (_authTimer != null) {
+      _authTimer?.cancel();
+    }
+
+    // Expiry Date - Current Time = Time to Expire
+    final timetoExpiry = _expiryDate?.difference(DateTime.now()).inSeconds;
+    _authTimer = Timer(Duration(seconds: timetoExpiry ?? 0), logout);
   }
 }
