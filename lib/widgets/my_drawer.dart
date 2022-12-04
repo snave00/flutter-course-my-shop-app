@@ -73,6 +73,8 @@ class MyDrawer extends StatelessWidget {
             () {
               // Close drawer
               Navigator.of(context).pop();
+              Navigator.of(context).pushReplacementNamed(
+                  '/'); // Will redirect to initial route / home.
               Provider.of<AuthProvider>(context, listen: false).logout();
             },
             Icons.logout,

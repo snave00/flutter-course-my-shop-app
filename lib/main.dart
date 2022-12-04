@@ -8,6 +8,7 @@ import './provider/cart_provider.dart';
 import '../provider/order_provider.dart';
 import './screens/product_overview_screen.dart';
 import './screens/auth_screen.dart';
+import './screens/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -60,7 +61,22 @@ class MyApp extends StatelessWidget {
             ),
             home: auth.isAuth
                 ? const ProductOverviewScreen()
-                : const AuthScreen(),
+                : FutureBuilder(
+                    future: auth.tryAutoLogin(),
+                    builder: (builderContext, authSnapshot) {
+                      switch (authSnapshot.connectionState) {
+                        case ConnectionState.waiting:
+                          return const SplashScreen();
+                        case ConnectionState.done:
+                        default:
+                          // Consumer<Auth> automatically runs if there's change
+                          // - in Auth (by notifyListers under tryAutoLogin()).
+                          // So auth.isAuth will run again and will check what
+                          // screen will be shown.
+                          return const AuthScreen();
+                      }
+                    },
+                  ),
             // initialRoute: '/auth',
             routes: AppRoutes.getRoutes,
           ),
