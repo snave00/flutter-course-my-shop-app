@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
             update: (updateContext, auth, previous) {
               var previousOrders = previous;
               previousOrders?.authToken = auth.token ?? '';
+              previousOrders?.userId = auth.userId ?? '';
               previousOrders == null ? [] : previousOrders.getOrders;
               return previousOrders!;
             },

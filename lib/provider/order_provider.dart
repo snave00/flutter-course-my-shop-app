@@ -9,9 +9,14 @@ class OrderProvider with ChangeNotifier {
   List<OrderItemModel> _orders = [];
 
   late String? _authToken;
+  late String? _userId;
 
   set authToken(String value) {
     _authToken = value;
+  }
+
+  set userId(String value) {
+    _userId = value;
   }
 
   List<OrderItemModel> get getOrders {
@@ -19,8 +24,11 @@ class OrderProvider with ChangeNotifier {
   }
 
   Future<void> addOrder(List<CartItemModel> cartProducts, double total) async {
-    final url = Uri.https('flutter-course-2a591-default-rtdb.firebaseio.com',
-        '/orders.json', {'auth': '$_authToken'});
+    final url = Uri.https(
+      'flutter-course-2a591-default-rtdb.firebaseio.com',
+      '/orders/$_userId.json',
+      {'auth': '$_authToken'},
+    );
     final timeStamp = DateTime.now();
     final response = await http.post(url,
         body: json.encode({
@@ -52,7 +60,7 @@ class OrderProvider with ChangeNotifier {
 
   Future<void> fetchAndSetOrders() async {
     final url = Uri.https('flutter-course-2a591-default-rtdb.firebaseio.com',
-        '/orders.json', {'auth': '$_authToken'});
+        '/orders/$_userId.json', {'auth': '$_authToken'});
     final response = await http.get(url);
     final List<OrderItemModel> loadedOrders = [];
     final extractedData = json.decode(response.body) as Map<String, dynamic>?;

@@ -129,7 +129,7 @@ class ProductProvider with ChangeNotifier {
       filterByUser
           ? {
               'auth': '$_authToken',
-              'orderBy':
+              'orderBy': // orderBy to avoid fetching all Data and avoid overloading calls.
                   json.encode("creatorId"), //json.encode to avoid errors.
               'equalTo': json.encode(_userId),
             }
@@ -151,6 +151,7 @@ class ProductProvider with ChangeNotifier {
       final extractedData = json.decode(response.body) as Map<String, dynamic>?;
       // final extractedData2 = jsonDecode(response.body); // alternative way
       print('FETCH PRODUCT: $extractedData');
+      print('FETCH PRODUCT2: ${response.body}');
       // print('FETCH PRODUCT2: $extractedData2');
       if (extractedData == null) {
         return;
