@@ -104,30 +104,30 @@ class _AuthCardState extends State<AuthCard>
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
-  /// Manual Animation
-  late AnimationController _controller; // Controls Animation
-  late Animation<Size> _heightAnimation;
+  // Animation
+  // late AnimationController _controller; // Controls Animation
+  // late Animation<Size> _heightAnimation;
 
   @override
   void initState() {
     super.initState();
     // this = SingleTickerProviderStateMixin
-    _controller = AnimationController(
-        vsync: this,
-        duration: const Duration(
-          milliseconds: 300,
-        ));
+    // _controller = AnimationController(
+    //     vsync: this,
+    //     duration: const Duration(
+    //       milliseconds: 300,
+    //     ));
 
     // Tween - animate between values.
-    _heightAnimation = Tween<Size>(
-            begin: const Size(double.infinity, 260),
-            end: const Size(double.infinity, 320))
-        .animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.fastOutSlowIn,
-      ),
-    );
+    // _heightAnimation = Tween<Size>(
+    //         begin: const Size(double.infinity, 260),
+    //         end: const Size(double.infinity, 320))
+    //     .animate(
+    //   CurvedAnimation(
+    //     parent: _controller,
+    //     curve: Curves.fastOutSlowIn,
+    //   ),
+    // );
 
     /// This is removed when using AnimatedBuilder()
     // _heightAnimation.addListener(() {
@@ -138,7 +138,7 @@ class _AuthCardState extends State<AuthCard>
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    // _controller.dispose();
   }
 
   void _submit() async {
@@ -163,12 +163,12 @@ class _AuthCardState extends State<AuthCard>
       setState(() {
         _authMode = AuthMode.Signup;
       });
-      _controller.forward();
+      // _controller.forward();
     } else {
       setState(() {
         _authMode = AuthMode.Login;
       });
-      _controller.reverse();
+      // _controller.reverse();
     }
   }
 
@@ -246,19 +246,19 @@ class _AuthCardState extends State<AuthCard>
         borderRadius: BorderRadius.circular(10.0),
       ),
       elevation: 8.0,
-      child: AnimatedBuilder(
-        animation: _heightAnimation,
-        builder: (builderContext, builderChild) => Container(
-          // height: _authMode == AuthMode.Signup ? 320 : 260,
-          height: _heightAnimation.value.height,
-          constraints: BoxConstraints(
-            // minHeight: _authMode == AuthMode.Signup ? 320 : 260,
-            minHeight: _heightAnimation.value.height,
-          ),
-          width: deviceSize.width * 0.75,
-          padding: const EdgeInsets.all(16.0),
-          child: builderChild,
+      // AnimatedContainer - Auto animate/detect the values
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+        height: _authMode == AuthMode.Signup ? 320 : 260,
+        // height: _heightAnimation.value.height,
+        constraints: BoxConstraints(
+          minHeight: _authMode == AuthMode.Signup ? 320 : 260,
+          // minHeight: _heightAnimation.value.height,
         ),
+        width: deviceSize.width * 0.75,
+        padding: const EdgeInsets.all(16.0),
+
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
