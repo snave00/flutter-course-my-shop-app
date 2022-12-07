@@ -23,16 +23,18 @@ class ProductDetailScreen extends StatelessWidget {
     ).findById(productId);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(product.title ?? 'No Title'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 300,
-              width: double.infinity,
-              child: Hero(
+      // appBar: AppBar(
+      //   title: Text(product.title ?? 'No Title'),
+      // ),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 300,
+            pinned: true,
+            // floating: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(product.title ?? 'No Title'),
+              background: Hero(
                 tag: productId,
                 child: Image.network(
                   product.imageUrl ?? '',
@@ -40,19 +42,34 @@ class ProductDetailScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
-            Text(
-              '\$${product.price}',
-              style: TextStyle(
-                fontSize: 20,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-              softWrap: true,
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                const SizedBox(height: 10),
+                Text(
+                  '\$${product.price}',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  softWrap: true,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  product.description ?? '',
+                  textAlign: TextAlign.center,
+                ),
+                // Added height to make it scrollable
+                Container(
+                  height: 800,
+                  // color: Colors.deepPurple,
+                )
+              ],
             ),
-            const SizedBox(height: 10),
-            Text(product.description ?? ''),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
