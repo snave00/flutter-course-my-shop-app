@@ -51,16 +51,16 @@ class AppRoutes {
     Navigator.of(context).pushNamed(_cartScreenRoute);
   }
 
-  // static void goToOrderScreen(BuildContext context) {
-  //   Navigator.of(context).pushReplacementNamed(_orderScreenRoute);
-  // }
+  static void goToOrderScreen(BuildContext context) {
+    Navigator.of(context).pushReplacementNamed(_orderScreenRoute);
+  }
 
   /// Using [CustomRoutes] in individual Pages.
-  static void goToOrderScreen(BuildContext context) {
-    Navigator.of(context).pushReplacement(CustomRoutes(
-      builder: (builderContext) => const OrderScreen(),
-    ));
-  }
+  // static void goToOrderScreen(BuildContext context) {
+  //   Navigator.of(context).pushReplacement(CustomRoutes(
+  //     builder: (builderContext) => const OrderScreen(),
+  //   ));
+  // }
 
   static void goToUserProductScreen(BuildContext context) {
     Navigator.of(context).pushReplacementNamed(_userProductScreenRoute);
