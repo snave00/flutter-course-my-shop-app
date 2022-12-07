@@ -87,12 +87,15 @@ class ProductItem extends StatelessWidget {
           onTap: () {
             AppRoutes.goToProductDetailScreen(context, product.id);
           },
-          child: FadeInImage(
-            placeholder:
-                const AssetImage('assets/images/product-placeholder.png'),
-            image: NetworkImage(product.imageUrl ?? ''),
-            fit: BoxFit.cover,
-            placeholderFit: BoxFit.contain,
+          child: Hero(
+            tag: product.id ?? 0,
+            child: FadeInImage(
+              placeholder:
+                  const AssetImage('assets/images/product-placeholder.png'),
+              image: NetworkImage(product.imageUrl ?? ''),
+              fit: BoxFit.cover,
+              placeholderFit: BoxFit.contain,
+            ),
           ),
         ),
       ),
