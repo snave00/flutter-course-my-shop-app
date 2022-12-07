@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_shop/utils/custom_routes.dart';
 import '../screens/user_product_screen.dart';
 import '../screens/product_overview_screen.dart';
 import '../screens/cart_screen.dart';
@@ -50,8 +51,15 @@ class AppRoutes {
     Navigator.of(context).pushNamed(_cartScreenRoute);
   }
 
+  // static void goToOrderScreen(BuildContext context) {
+  //   Navigator.of(context).pushReplacementNamed(_orderScreenRoute);
+  // }
+
+  /// Using [CustomRoutes] in individual Pages.
   static void goToOrderScreen(BuildContext context) {
-    Navigator.of(context).pushReplacementNamed(_orderScreenRoute);
+    Navigator.of(context).pushReplacement(CustomRoutes(
+      builder: (builderContext) => const OrderScreen(),
+    ));
   }
 
   static void goToUserProductScreen(BuildContext context) {
